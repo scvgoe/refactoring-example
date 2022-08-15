@@ -21,6 +21,10 @@ module.exports = function statement(invoice, plays) {
 	result += `적립 포인트: ${volumeCredits}점\n`;
 	return result;
 
+	function playFor(aPerformance) {
+		return plays[aPerformance.playID];
+	}
+
 	function amountFor(play, aPerformance) {
 		let result = 0;
 
