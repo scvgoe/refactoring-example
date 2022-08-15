@@ -1,4 +1,4 @@
-function createStatementData(invoice, plays) {
+exports.createStatementData = function createStatementData(invoice, plays) {
 	const statementData = {};
 	statementData.customer = invoice.customer;
 	statementData.performances = invoice.performances.map(enrichPerformance);
@@ -58,4 +58,3 @@ function createStatementData(invoice, plays) {
 		return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
 	}
 }
-exports.createStatementData = createStatementData;
