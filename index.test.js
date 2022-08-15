@@ -1,4 +1,4 @@
-const statement = require('./index')
+const { statement } = require('./index')
 
 describe('statement', () => {
 	let playsJson = require('./plays.json');

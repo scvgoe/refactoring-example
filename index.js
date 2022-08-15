@@ -1,6 +1,6 @@
 const { createStatementData } = require("./createStatementData");
 
-module.exports = function statement(invoice, plays) {
+exports.statement = function statement(invoice, plays) {
 	return renderPlainText(createStatementData(invoice, plays));
 }
 
