@@ -5,7 +5,7 @@ module.exports = function statement(invoice, plays) {
 	const format = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format;
 
 	for (let perf of invoice.performances) {
-		let thisAmount = amountFor(playFor(perf), perf);
+		let thisAmount = amountFor(perf);
 
 		// 포인트를 적립한다.
 		volumeCredits += Math.max(perf.audience - 30, 0);
@@ -24,7 +24,7 @@ module.exports = function statement(invoice, plays) {
 		return plays[aPerformance.playID];
 	}
 
-	function amountFor(play, aPerformance) {
+	function amountFor(aPerformance) {
 		let result = 0;
 
 		switch (playFor(aPerformance).type) {
