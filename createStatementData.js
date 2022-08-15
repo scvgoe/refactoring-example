@@ -11,17 +11,13 @@ exports.createStatementData = function createStatementData(invoice, plays) {
 		const performanceCalculator = new PerformanceCalculator(aPerformance, playFor(aPerformance));
 		const result = Object.assign({}, aPerformance);
 		result.play = playFor(result);
-		result.amount = amountFor(result);
+		result.amount = performanceCalculator.amount;
 		result.volumeCredits = volumeCreditsFor(result);
 		return result;
 	}
 
 	function playFor(aPerformance) {
 		return plays[aPerformance.playID];
-	}
-
-	function amountFor(aPerformance) {
-		return new PerformanceCalculator(aPerformance, playFor(aPerformance)).amount;
 	}
 
 	function volumeCreditsFor(aPerformance) {
