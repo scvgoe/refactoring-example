@@ -4,6 +4,9 @@ module.exports = function statement(invoice, plays) {
 
 	for (let perf of invoice.performances) {
 		result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+	}
+
+	for (let perf of invoice.performances) {
 		totalAmount += amountFor(perf);
 	}
 
