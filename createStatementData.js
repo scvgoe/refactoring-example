@@ -7,10 +7,10 @@ function createStatementData(invoice, plays) {
 	return statementData;
 
 	function enrichStatementData(aPerformance) {
-		const performancCalculator = new PerformancCalculator(aPerformance);
 		aPerformance.play = playFor(aPerformance);
 		aPerformance.amount = amountFor(aPerformance);
 		aPerformance.volumeCredits = volumeCreditsFor(aPerformance);
+		const performancCalculator = createPerformancCalculator(aPerformance);
 		return aPerformance;
 	}
 
@@ -60,6 +60,25 @@ function createStatementData(invoice, plays) {
 exports.createStatementData = createStatementData;
 
 
+function createPerformancCalculator(aPerformance) {
+	switch (aPerformance.play.type) {
+		case "tragedy": // 비극
+			return new TragedyCalculator(aPerformance);
+		case "comedy": // 희극
+			return new ComedyCalculator(aPerformance);
+		default:
+			throw new Error(`알 수 없는 장르: ${aPerformance.play.type}`);
+	}
+}
+
 class PerformancCalculator {
 	constructor(aPerformance) { }
+}
+
+class TragedyCalculator extends PerformancCalculator {
+
+}
+
+class ComedyCalculator extends PerformancCalculator {
+
 }
