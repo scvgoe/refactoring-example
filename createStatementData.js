@@ -7,6 +7,7 @@ function createStatementData(invoice, plays) {
 	return statementData;
 
 	function enrichStatementData(aPerformance) {
+		const performancCalculator = new PerformancCalculator(aPerformance);
 		aPerformance.play = playFor(aPerformance);
 		aPerformance.amount = amountFor(aPerformance);
 		aPerformance.volumeCredits = volumeCreditsFor(aPerformance);
@@ -57,3 +58,8 @@ function createStatementData(invoice, plays) {
 	}
 }
 exports.createStatementData = createStatementData;
+
+
+class PerformancCalculator {
+	constructor(aPerformance) { }
+}
