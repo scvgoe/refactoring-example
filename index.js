@@ -7,6 +7,7 @@ module.exports = function statement(invoice, plays) {
 	function enrichStatementData(aPerformance) {
 		aPerformance.play = playFor(aPerformance)
 		aPerformance.amount = amountFor(aPerformance)
+		aPerformance.volumeCredits = volumeCreditsFor(aPerformance)
 		return aPerformance;
 	}
 
@@ -36,6 +37,14 @@ module.exports = function statement(invoice, plays) {
 		}
 		return result;
 	}
+
+	function volumeCreditsFor(aPerformance) {
+		let result = Math.max(aPerformance.audience - 30, 0);
+		// 희극 관객 5명마다 추가 포인트를 제공한다.
+		if ("comedy" === aPerformance.play.type)
+			result += Math.floor(aPerformance.audience / 5);
+		return result;
+	}
 }
 
 function renderPlainText(data) {
@@ -62,20 +71,12 @@ function renderPlainText(data) {
 		let result = 0;
 		for (let perf of data.performances) {
 			// 포인트를 적립한다.
-			result += volumeCreditsFor(perf);
+			result += perf.volumeCredits;
 		}
 		return result;
 	}
 
 	function usd(aNumber) {
 		return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(aNumber / 100);
-	}
-
-	function volumeCreditsFor(aPerformance) {
-		let result = Math.max(aPerformance.audience - 30, 0);
-		// 희극 관객 5명마다 추가 포인트를 제공한다.
-		if ("comedy" === aPerformance.play.type)
-			result += Math.floor(aPerformance.audience / 5);
-		return result;
 	}
 }
