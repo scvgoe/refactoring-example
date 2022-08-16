@@ -1,4 +1,9 @@
 module.exports = function statement(invoice, plays) {
+	const statementData = {};
+	return renderPlainText(statementData, invoice, plays);
+}
+
+function renderPlainText(data, invoice, plays) {
 	let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
 	for (let perf of invoice.performances) {
@@ -34,12 +39,13 @@ module.exports = function statement(invoice, plays) {
 	function volumeCreditsFor(aPerformance) {
 		let result = Math.max(aPerformance.audience - 30, 0);
 		// 희극 관객 5명마다 추가 포인트를 제공한다.
-		if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
+		if ("comedy" === playFor(aPerformance).type)
+			result += Math.floor(aPerformance.audience / 5);
 		return result;
 	}
 
 	function playFor(aPerformance) {
-		return plays[aPerformance.playID]
+		return plays[aPerformance.playID];
 	}
 
 	function amountFor(aPerformance) {
