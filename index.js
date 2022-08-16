@@ -3,6 +3,7 @@ module.exports = function statement(invoice, plays) {
 	statementData.customer = invoice.customer;
 	statementData.performances = invoice.performances.map(enrichStatementData);
 	statementData.totalAmount = totalAmount(statementData);
+	statementData.totalVolumeCredits = totalVolumeCredits(statementData)
 	return renderPlainText(statementData);
 
 	function enrichStatementData(aPerformance) {
@@ -54,6 +55,15 @@ module.exports = function statement(invoice, plays) {
 		}
 		return result;
 	}
+
+	function totalVolumeCredits(data) {
+		let result = 0;
+		for (let perf of data.performances) {
+			// 포인트를 적립한다.
+			result += perf.volumeCredits;
+		}
+		return result;
+	}
 }
 
 function renderPlainText(data) {
@@ -65,17 +75,9 @@ function renderPlainText(data) {
 	}
 
 	result += `총액: ${usd(data.totalAmount)}\n`;
-	result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+	result += `적립 포인트: ${data.totalVolumeCredits}점\n`;
 	return result;
 
-	function totalVolumeCredits() {
-		let result = 0;
-		for (let perf of data.performances) {
-			// 포인트를 적립한다.
-			result += perf.volumeCredits;
-		}
-		return result;
-	}
 
 	function usd(aNumber) {
 		return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(aNumber / 100);
