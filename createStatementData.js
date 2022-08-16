@@ -10,20 +10,12 @@ function createStatementData(invoice, plays) {
 		const performancCalculator = createPerformancCalculator(aPerformance, playFor(aPerformance));
 		aPerformance.play = playFor(aPerformance);
 		aPerformance.amount = performancCalculator.amount;
-		aPerformance.volumeCredits = volumeCreditsFor(aPerformance);
+		aPerformance.volumeCredits = performancCalculator.volumeCredits;
 		return aPerformance;
 	}
 
 	function playFor(aPerformance) {
 		return plays[aPerformance.playID];
-	}
-
-	function volumeCreditsFor(aPerformance) {
-		let result = Math.max(aPerformance.audience - 30, 0);
-		// 희극 관객 5명마다 추가 포인트를 제공한다.
-		if ("comedy" === aPerformance.play.type)
-			result += Math.floor(aPerformance.audience / 5);
-		return result;
 	}
 
 	function totalAmount(data) {
@@ -52,6 +44,10 @@ class PerformancCalculator {
 	constructor(aPerformance) {
 		this.aPerformance = aPerformance;
 	}
+
+	get volumeCredits() {
+		return Math.max(this.aPerformance.audience - 30, 0);
+	}
 }
 
 class TragedyCalculator extends PerformancCalculator {
@@ -72,5 +68,9 @@ class ComedyCalculator extends PerformancCalculator {
 		}
 		result += 300 * this.aPerformance.audience;
 		return result;
+	}
+
+	get volumeCredits() {
+		return super.volumeCredits + Math.floor(this.aPerformance.audience / 5);
 	}
 }
