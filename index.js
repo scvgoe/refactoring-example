@@ -1,10 +1,15 @@
 module.exports = function statement(invoice, plays) {
+	const statementData = createStatementData(invoice, plays);
+	return renderPlainText(statementData);
+}
+
+function createStatementData(invoice, plays) {
 	const statementData = {};
 	statementData.customer = invoice.customer;
 	statementData.performances = invoice.performances.map(enrichStatementData);
 	statementData.totalAmount = totalAmount(statementData);
-	statementData.totalVolumeCredits = totalVolumeCredits(statementData)
-	return renderPlainText(statementData);
+	statementData.totalVolumeCredits = totalVolumeCredits(statementData);
+	return statementData;
 
 	function enrichStatementData(aPerformance) {
 		aPerformance.play = playFor(aPerformance)
