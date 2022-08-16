@@ -1,8 +1,8 @@
 module.exports = function statement(invoice, plays) {
 	let totalAmount = 0;
-	let volumeCredits = 0;
 	let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
+	let volumeCredits = 0;
 	for (let perf of invoice.performances) {
 		// 포인트를 적립한다.
 		volumeCredits += volumeCreditsFor(perf);
