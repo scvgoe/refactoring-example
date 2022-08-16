@@ -7,38 +7,15 @@ function createStatementData(invoice, plays) {
 	return statementData;
 
 	function enrichStatementData(aPerformance) {
-		aPerformance.play = playFor(aPerformance);
-		aPerformance.amount = amountFor(aPerformance);
-		aPerformance.volumeCredits = volumeCreditsFor(aPerformance);
 		const performancCalculator = createPerformancCalculator(aPerformance, playFor(aPerformance));
+		aPerformance.play = playFor(aPerformance);
+		aPerformance.amount = performancCalculator.amount;
+		aPerformance.volumeCredits = volumeCreditsFor(aPerformance);
 		return aPerformance;
 	}
 
 	function playFor(aPerformance) {
 		return plays[aPerformance.playID];
-	}
-
-	function amountFor(aPerformance) {
-		let result = 0;
-
-		switch (aPerformance.play.type) {
-			case "tragedy": // 비극
-				result = 40000;
-				if (aPerformance.audience > 30) {
-					result += 1000 * (aPerformance.audience - 30);
-				}
-				break;
-			case "comedy": // 희극
-				result = 30000;
-				if (aPerformance.audience > 20) {
-					result += 10000 + 500 * (aPerformance.audience - 20);
-				}
-				result += 300 * aPerformance.audience;
-				break;
-			default:
-				throw new Error(`알 수 없는 장르: ${aPerformance.play.type}`);
-		}
-		return result;
 	}
 
 	function volumeCreditsFor(aPerformance) {
@@ -72,13 +49,28 @@ function createPerformancCalculator(aPerformance, play) {
 }
 
 class PerformancCalculator {
-	constructor(aPerformance) { }
+	constructor(aPerformance) {
+		this.aPerformance = aPerformance;
+	}
 }
 
 class TragedyCalculator extends PerformancCalculator {
-
+	get amount() {
+		let result = 40000;
+		if (this.aPerformance.audience > 30) {
+			result += 1000 * (this.aPerformance.audience - 30);
+		}
+		return result;
+	}
 }
 
 class ComedyCalculator extends PerformancCalculator {
-
+	get amount() {
+		let result = 30000;
+		if (this.aPerformance.audience > 20) {
+			result += 10000 + 500 * (this.aPerformance.audience - 20);
+		}
+		result += 300 * this.aPerformance.audience;
+		return result;
+	}
 }
