@@ -6,11 +6,14 @@ module.exports = function statement(invoice, plays) {
 	for (let perf of invoice.performances) {
 		// 포인트를 적립한다.
 		volumeCredits += volumeCreditsFor(perf);
+	}
 
+	for (let perf of invoice.performances) {
 		// 청구 내역을 출력한다.
 		result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
 		totalAmount += amountFor(perf);
 	}
+
 	result += `총액: ${usd(totalAmount)}\n`;
 	result += `적립 포인트: ${volumeCredits}점\n`;
 	return result;
