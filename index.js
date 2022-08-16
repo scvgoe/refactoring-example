@@ -17,10 +17,10 @@ module.exports = function statement(invoice, plays) {
 	return result;
 
 	function volumeCreditsFor(aPerformance) {
-		let volumeCredits = Math.max(aPerformance.audience - 30, 0);
+		let result = Math.max(aPerformance.audience - 30, 0);
 		// 희극 관객 5명마다 추가 포인트를 제공한다.
-		if ("comedy" === playFor(aPerformance).type) volumeCredits += Math.floor(aPerformance.audience / 5);
-		return volumeCredits;
+		if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
+		return result;
 	}
 
 	function playFor(aPerformance) {
